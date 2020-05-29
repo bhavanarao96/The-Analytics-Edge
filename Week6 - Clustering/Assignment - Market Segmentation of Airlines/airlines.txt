@@ -1,0 +1,127 @@
+> airlines = read.csv("Airlines.csv")
+Error in file(file, "rt") : cannot open the connection
+In addition: Warning message:
+In file(file, "rt") :
+  cannot open file 'Airlines.csv': No such file or directory
+> airlines = read.csv("AirlinesCluster.csv")
+> summary(airlines)
+    Balance          QualMiles         BonusMiles       BonusTrans  
+ Min.   :      0   Min.   :    0.0   Min.   :     0   Min.   : 0.0  
+ 1st Qu.:  18528   1st Qu.:    0.0   1st Qu.:  1250   1st Qu.: 3.0  
+ Median :  43097   Median :    0.0   Median :  7171   Median :12.0  
+ Mean   :  73601   Mean   :  144.1   Mean   : 17145   Mean   :11.6  
+ 3rd Qu.:  92404   3rd Qu.:    0.0   3rd Qu.: 23801   3rd Qu.:17.0  
+ Max.   :1704838   Max.   :11148.0   Max.   :263685   Max.   :86.0  
+  FlightMiles       FlightTrans     DaysSinceEnroll
+ Min.   :    0.0   Min.   : 0.000   Min.   :   2   
+ 1st Qu.:    0.0   1st Qu.: 0.000   1st Qu.:2330   
+ Median :    0.0   Median : 0.000   Median :4096   
+ Mean   :  460.1   Mean   : 1.374   Mean   :4119   
+ 3rd Qu.:  311.0   3rd Qu.: 1.000   3rd Qu.:5790   
+ Max.   :30817.0   Max.   :53.000   Max.   :8296   
+> library(caret)
+Loading required package: lattice
+Loading required package: ggplot2
+> preproc = preProcess(airlines)
+> 
+> airlinesNorm = predict(preproc, airlines)
+> simmary(airlinesNorm)
+Error in simmary(airlinesNorm) : could not find function "simmary"
+> summary(airlinesNorm)
+    Balance          QualMiles         BonusMiles        BonusTrans      
+ Min.   :-0.7303   Min.   :-0.1863   Min.   :-0.7099   Min.   :-1.20805  
+ 1st Qu.:-0.5465   1st Qu.:-0.1863   1st Qu.:-0.6581   1st Qu.:-0.89568  
+ Median :-0.3027   Median :-0.1863   Median :-0.4130   Median : 0.04145  
+ Mean   : 0.0000   Mean   : 0.0000   Mean   : 0.0000   Mean   : 0.00000  
+ 3rd Qu.: 0.1866   3rd Qu.:-0.1863   3rd Qu.: 0.2756   3rd Qu.: 0.56208  
+ Max.   :16.1868   Max.   :14.2231   Max.   :10.2083   Max.   : 7.74673  
+  FlightMiles       FlightTrans       DaysSinceEnroll   
+ Min.   :-0.3286   Min.   :-0.36212   Min.   :-1.99336  
+ 1st Qu.:-0.3286   1st Qu.:-0.36212   1st Qu.:-0.86607  
+ Median :-0.3286   Median :-0.36212   Median :-0.01092  
+ Mean   : 0.0000   Mean   : 0.00000   Mean   : 0.00000  
+ 3rd Qu.:-0.1065   3rd Qu.:-0.09849   3rd Qu.: 0.80960  
+ Max.   :21.6803   Max.   :13.61035   Max.   : 2.02284  
+> sd(airlinesNorm)
+Error in is.data.frame(x) : 
+  'list' object cannot be coerced to type 'double'
+> airlineDist = dist(airlinesNorm, method="ward")
+Error in dist(airlinesNorm, method = "ward") : invalid distance method
+> airlineDist = dist(airlinesNorm, method="euclidean")
+> airlinesCluster = hclust(airlineDist, method = "ward")
+The "ward" method has been renamed to "ward.D"; note new "ward.D2"
+> plot(airlineCluster)
+Error in plot(airlineCluster) : object 'airlineCluster' not found
+> plot(airlinesCluster)
+> airlineGroup = cutree(airlinesCluster, k=5)
+> str(airlinGroup)
+Error in str(airlinGroup) : object 'airlinGroup' not found
+> str(airlineGroup)
+ int [1:3999] 1 1 1 1 2 1 1 1 2 2 ...
+> table(airlineGroup==1)
+
+FALSE  TRUE 
+ 3223   776 
+> tapply(airlines$Balance, clusterGroups, mean)
+Error in tapply(airlines$Balance, clusterGroups, mean) : 
+  object 'clusterGroups' not found
+> tapply(airlines$Balance, airlineGroup, mean)
+        1         2         3         4         5 
+ 57866.90 110669.27 198191.57  52335.91  36255.91 
+> tapply(airlines$QualMiles, airlineGroup, mean)
+           1            2            3            4            5 
+   0.6443299 1065.9826590   30.3461538    4.8479263    2.5111773 
+> tapply(airlines$BonusMiles, airlineGroup, mean)
+        1         2         3         4         5 
+10360.124 22881.763 55795.860 20788.766  2264.788 
+> tapply(airlines$BonusTrans, airlineGroup, mean)
+        1         2         3         4         5 
+10.823454 18.229287 19.663968 17.087558  2.973174 
+> tapply(airlines$FlightTrans, airlineGroup, mean)
+        1         2         3         4         5 
+0.3028351 7.4026975 1.0688259 0.3444700 0.4388972 
+> tapply(airlines$FlightMiles, airlineGroup, mean)
+         1          2          3          4          5 
+  83.18428 2613.41811  327.67611  111.57373  119.32191 
+> tapply(airlines$DaysSinceEnroll, airlineGroup, mean)
+       1        2        3        4        5 
+6235.365 4402.414 5615.709 2840.823 3060.081 
+> set.seed(88)
+> KMC = kmeans(airlinesNorm, centers=5, iter.max=1000)
+> table(KMC$clusters)
+< table of extent 0 >
+> table(KMC$Clusters)
+< table of extent 0 >
+> str(KMC)
+List of 9
+ $ cluster     : int [1:3999] 4 4 4 4 1 4 1 4 3 1 ...
+ $ centers     : num [1:5, 1:7] 0.787 0.401 1.172 -0.161 -0.352 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : chr [1:5] "1" "2" "3" "4" ...
+  .. ..$ : chr [1:7] "Balance" "QualMiles" "BonusMiles" "BonusTrans" ...
+ $ totss       : num 27986
+ $ withinss    : num [1:5] 4440 704 3571 2422 2374
+ $ tot.withinss: num 13511
+ $ betweenss   : num 14475
+ $ size        : int [1:5] 776 57 143 1373 1650
+ $ iter        : int 4
+ $ ifault      : int 0
+ - attr(*, "class")= chr "kmeans"
+> table(KMC$cluster)
+
+   1    2    3    4    5 
+ 776   57  143 1373 1650 
+> KMC$centers
+     Balance   QualMiles  BonusMiles  BonusTrans FlightMiles FlightTrans
+1  0.7866778 -0.08547306  1.40214847  1.01145492  0.01417749  0.02211363
+2  0.4009981  6.97876620  0.08495883  0.07250717  0.34260322  0.38252097
+3  1.1722573  0.42324832  0.66036647  1.74459327  3.78734636  4.05877606
+4 -0.1606061 -0.11505046 -0.34731771 -0.26038231 -0.17602747 -0.19180853
+5 -0.3517815 -0.14183200 -0.43059094 -0.41272355 -0.20026359 -0.21576712
+  DaysSinceEnroll
+1       0.3859187
+2      -0.1193065
+3       0.2652869
+4       0.8270834
+5      -0.8886025
+> 

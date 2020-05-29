@@ -1,0 +1,64 @@
+> cor(wine$WinterRain, wine$Price)	#correlation
+[1] 0.1366505
+> cor(wine$Age, wine$FrancePop)
+[1] -0.9944851
+> cor(wine)
+                   Year      Price   WinterRain        AGST HarvestRain
+Year         1.00000000 -0.4477679  0.016970024 -0.24691585  0.02800907
+Price       -0.44776786  1.0000000  0.136650547  0.65956286 -0.56332190
+WinterRain   0.01697002  0.1366505  1.000000000 -0.32109061 -0.27544085
+AGST        -0.24691585  0.6595629 -0.321090611  1.00000000 -0.06449593
+HarvestRain  0.02800907 -0.5633219 -0.275440854 -0.06449593  1.00000000
+Age         -1.00000000  0.4477679 -0.016970024  0.24691585 -0.02800907
+FrancePop    0.99448510 -0.4668616 -0.001621627 -0.25916227  0.04126439
+                    Age    FrancePop
+Year        -1.00000000  0.994485097
+Price        0.44776786 -0.466861641
+WinterRain  -0.01697002 -0.001621627
+AGST         0.24691585 -0.259162274
+HarvestRain -0.02800907  0.041264394
+Age          1.00000000 -0.994485097
+FrancePop   -0.99448510  1.000000000
+> 
+> model5 = lm(Price ~ AGST + HarvestRain + WinterRain, data=wine)
+> summary(model5)
+
+Call:
+lm(formula = Price ~ AGST + HarvestRain + WinterRain, data = wine)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.67472 -0.12958  0.01973  0.20751  0.63846 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -4.3016263  2.0366743  -2.112 0.046831 *  
+AGST         0.6810242  0.1117011   6.097 4.75e-06 ***
+HarvestRain -0.0039481  0.0009987  -3.953 0.000726 ***
+WinterRain   0.0011765  0.0005920   1.987 0.060097 .  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.345 on 21 degrees of freedom
+Multiple R-squared:  0.7537,    Adjusted R-squared:  0.7185 
+F-statistic: 21.42 on 3 and 21 DF,  p-value: 1.359e-06
+
+> wineTest = read.csv("wine_test.csv")
+> str(wineTest)
+'data.frame':   2 obs. of  7 variables:
+ $ Year       : int  1979 1980
+ $ Price      : num  6.95 6.5
+ $ WinterRain : int  717 578
+ $ AGST       : num  16.2 16
+ $ HarvestRain: int  122 74
+ $ Age        : int  4 3
+ $ FrancePop  : num  54836 55110
+> predictTest = predict(model4, newdata=wineTest)	#prediction on test data
+> predictTest
+       1        2 
+6.768925 6.684910 
+> SSE = sum((wineTest$Price - predictTest)^2)		#variation from sample value
+> SST = sum((wineTest$Price - mean(wine$Price))^2)	#variation from sample mean
+> 1- SSE/SST		#R sqaured value
+[1] 0.7944278
+> 

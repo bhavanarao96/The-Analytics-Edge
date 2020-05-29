@@ -1,0 +1,75 @@
+
+R version 3.6.3 (2020-02-29) -- "Holding the Windsock"
+Copyright (C) 2020 The R Foundation for Statistical Computing
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> > healthy = read.csv("healthy.csv")
+Error: unexpected '>' in ">"
+> > healthy = read.csv("healthy.csv", header=FALSE)
+Error: unexpected '>' in ">"
+> > healthyMatrix = as.matrix(healthy)
+Error: unexpected '>' in ">"
+> > str(healthyMatrix)
+Error: unexpected '>' in ">"
+> healthy = read.csv("healthy.csv")
+> healthy = read.csv("healthy.csv", header=FALSE)
+> healthyMatrix = as.matrix(healthy)
+> healthyVector = as.vector(healthyMatrix)
+> set.seed(1)
+> KMC = kmeans(healthyVector, centers=k, iter.max=1000)
+Error in kmeans(healthyVector, centers = k, iter.max = 1000) : 
+  object 'k' not found
+> k=5
+> KMC = kmeans(healthyVector, centers=k, iter.max=1000)
+> str(KMC)
+List of 9
+ $ cluster     : int [1:365636] 5 5 5 5 5 5 5 5 5 5 ...
+ $ centers     : num [1:5, 1] 0.1166 0.2014 0.4914 0.3299 0.0219
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : chr [1:5] "1" "2" "3" "4" ...
+  .. ..$ : NULL
+ $ totss       : num 5775
+ $ withinss    : num [1:5] 65.9 54.4 81.1 47.4 53.3
+ $ tot.withinss: num 302
+ $ betweenss   : num 5473
+ $ size        : int [1:5] 114480 65557 18298 27338 139963
+ $ iter        : int 3
+ $ ifault      : int 0
+ - attr(*, "class")= chr "kmeans"
+> healthyClusters = KMC$cluster
+>  dim(healthyClusters) = c(nrow(healthyMartix),ncol(healthyMatrix))
+Error in nrow(healthyMartix) : object 'healthyMartix' not found
+> dim(healthyClusters) = c(nrow(healthyMatrix),ncol(healthyMatrix))
+> image(healthyClusters, axes=FALSE, col=rainbow(k))
+> tumor = read.csv("tumor.csv", header=FALSE)
+> tumorMatrix = as.matrix(tumor)
+> tumorVector = as.vector(tumorMatrix)
+> library(flexclust)
+Loading required package: grid
+Loading required package: lattice
+Loading required package: modeltools
+Loading required package: stats4
+> KMC.kcca = as.kcca(KMC, healthyVector)
+> tumorClusters = predict(KMC.kcca, newdata=tumorVector)
+> dim(tumorClusters) = c(nrow(timorMatrix), ncol(tumorMatrix))
+Error in nrow(timorMatrix) : object 'timorMatrix' not found
+> 
+> dim(tumorClusters) = c(nrow(tumorMatrix), ncol(tumorMatrix))
+> image(tumorClusters, axes=FALSE, col=rainmow(k))
+Error in rainmow(k) : could not find function "rainmow"
+> image(tumorClusters, axes=FALSE, col=rainbow(k))
+> 

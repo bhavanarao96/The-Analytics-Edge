@@ -1,0 +1,232 @@
+> boston = read.csv("boston.csv")
+Error in file(file, "rt") : cannot open the connection
+In addition: Warning message:
+In file(file, "rt") :
+  cannot open file 'boston.csv': No such file or directory
+> boston = read.csv("boston.csv")
+> str(boston)
+'data.frame':   506 obs. of  16 variables:
+ $ TOWN   : Factor w/ 92 levels "Arlington","Ashland",..: 54 77 77 46 46 46 69 69 69 69 ...
+ $ TRACT  : int  2011 2021 2022 2031 2032 2033 2041 2042 2043 2044 ...
+ $ LON    : num  -71 -71 -70.9 -70.9 -70.9 ...
+ $ LAT    : num  42.3 42.3 42.3 42.3 42.3 ...
+ $ MEDV   : num  24 21.6 34.7 33.4 36.2 28.7 22.9 22.1 16.5 18.9 ...
+ $ CRIM   : num  0.00632 0.02731 0.02729 0.03237 0.06905 ...
+ $ ZN     : num  18 0 0 0 0 0 12.5 12.5 12.5 12.5 ...
+ $ INDUS  : num  2.31 7.07 7.07 2.18 2.18 2.18 7.87 7.87 7.87 7.87 ...
+ $ CHAS   : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ NOX    : num  0.538 0.469 0.469 0.458 0.458 0.458 0.524 0.524 0.524 0.524 ...
+ $ RM     : num  6.58 6.42 7.18 7 7.15 ...
+ $ AGE    : num  65.2 78.9 61.1 45.8 54.2 58.7 66.6 96.1 100 85.9 ...
+ $ DIS    : num  4.09 4.97 4.97 6.06 6.06 ...
+ $ RAD    : int  1 2 2 3 3 3 5 5 5 5 ...
+ $ TAX    : int  296 242 242 222 222 222 311 311 311 311 ...
+ $ PTRATIO: num  15.3 17.8 17.8 18.7 18.7 18.7 15.2 15.2 15.2 15.2 ...
+> plot(boston$LON, boston$LAT)
+> plot(boston$LON, boston$LAT)
+> points(boston$LON[boston$CHAS==1],boston$LAT[boston$CHAS==1], col="blue", pch=19)
+> points(boston$LON[boston$TRACT==3531], bostonLAT[boston$TRACT==3531]col="red", pch=19)
+Error: unexpected symbol in "points(boston$LON[boston$TRACT==3531], bostonLAT[boston$TRACT==3531]col"
+> points(boston$LON[boston$TRACT==3531], bostonLAT[boston$TRACT==3531],col="red", pch=19)
+Error in xy.coords(x, y) : object 'bostonLAT' not found
+> points(boston$LON[boston$TRACT==3531], boston$LAT[boston$TRACT==3531],col="red", pch=19)
+> summary(boston$NOX)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.3850  0.4490  0.5380  0.5547  0.6240  0.8710 
+> points(boston$LON[boston$NOX>=0.55], boston$LAT[boston$NOX >= 0.55],col="green", pch=19)
+> plot(boston$LON, boston$LAT)
+> summary(boston$MEDV)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   5.00   17.02   21.20   22.53   25.00   50.00 
+> points(boston$LON[boston$MEDV>=21.2], bostonLAT[boston$MEDV>=21.2],col="red", pch=19)
+Error in xy.coords(x, y) : object 'bostonLAT' not found
+> points(boston$LON[boston$MEDV>=21.2], boston$LAT[boston$MEDV>=21.2],col="red", pch=19)
+> latlonlm = lm(MEDV ~ LAT+LON, data=boston)
+> summary(latlonlm)
+
+Call:
+lm(formula = MEDV ~ LAT + LON, data = boston)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-16.460  -5.590  -1.299   3.695  28.129 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -3178.472    484.937  -6.554 1.39e-10 ***
+LAT             8.046      6.327   1.272    0.204    
+LON           -40.268      5.184  -7.768 4.50e-14 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 8.693 on 503 degrees of freedom
+Multiple R-squared:  0.1072,    Adjusted R-squared:  0.1036 
+F-statistic: 30.19 on 2 and 503 DF,  p-value: 4.159e-13
+
+> plot(boston$LON, boston$LAT)
+> points(boston$LON[boston$MEDV>=21.2], boston$LAT[boston$MEDV>=21.2],col="red", pch=19)
+> points(boston$LON[latlonlm$filled.values>=21.2], boston$LON[latlonlm$filled.values>=21.2]
++ points(boston$LON[latlonlm$filled.values>=21.2], boston$LAT[latlonlm$filled.values>=21.2], col="blue", pch='$')
+Error: unexpected symbol in:
+"points(boston$LON[latlonlm$filled.values>=21.2], boston$LON[latlonlm$filled.values>=21.2]
+points"
+> points(boston$LON[latlonlm$filled.values>=21.2], boston$LAT[latlonlm$filled.values>=21.2], col="blue", pch='$')
+> points(boston$LON[latlonlm$fitted.values>=21.2], boston$LAT[latlonlm$fitted.values>=21.2], col="blue", pch='$')
+> library(rpart)
+> library(rpart.plot)
+> latlontree = rpart(MEDV ~ LAT+LON, data=boston)
+> prp(latlontree)
+> plot(boston$LON, boston$LAT)
+> points(boston$LON[boston$MEDV>=21.2], boston$LAT[boston$MEDV>=21.2],col="red", pch=19)
+> fittedvalues = predict(latlontree)
+> points(boston$LON[fittedvalue>=21.2], boston$LAT[fittedvalue>=21.2],col="blue", pch='$')
+Error in points(boston$LON[fittedvalue >= 21.2], boston$LAT[fittedvalue >=  : 
+  object 'fittedvalue' not found
+> points(boston$LON[fittedvalues>=21.2], boston$LAT[fittedvalues>=21.2],col="blue", pch='$')
+> latlontree = rpart(MEDV ~ LAT+LON, data=boston, minbucket=50)
+> plot(latlontree)
+> 
+> text(latlontree)
+> plot(boston$LON, boston$LAT)
+> abline(v=-71.07)
+> abline(h=42.21)
+> abline(h=42.17)
+> points(boston$LON[boston$MEDV>=21.2], boston$LAT[boston$MEDV>=21.2],col="red", pch=19)
+> library(caTools)
+> set.seed(123)
+> split = sample.split(boston$MEDV, SplitRatio=0.7)
+> train = subset(boston, split==TRUE)
+> test = subset(boston, split==FALSE)
+> latlonlm = lm(MEDV ~ LAT+LON, data=boston)
+> linreg = lm(MEDV ~ LAT+LON+CRIM+ZN+INDUS+CHAS+NOX+RM+AGE+DIS+RAD+TAX+PTRATIO, data=boston)
+> summary(linreg)
+
+Call:
+lm(formula = MEDV ~ LAT + LON + CRIM + ZN + INDUS + CHAS + NOX + 
+    RM + AGE + DIS + RAD + TAX + PTRATIO, data = boston)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-15.875  -2.708  -0.648   1.884  37.164 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -1.680e+02  3.422e+02  -0.491 0.623743    
+LAT          2.250e+00  4.142e+00   0.543 0.587240    
+LON         -1.393e+00  3.809e+00  -0.366 0.714674    
+CRIM        -1.825e-01  3.608e-02  -5.059 5.97e-07 ***
+ZN           4.001e-02  1.553e-02   2.577 0.010260 *  
+INDUS       -4.268e-02  6.968e-02  -0.613 0.540433    
+CHAS         3.468e+00  9.750e-01   3.557 0.000412 ***
+NOX         -2.144e+01  4.498e+00  -4.766 2.47e-06 ***
+RM           6.085e+00  3.987e-01  15.260  < 2e-16 ***
+AGE         -4.559e-02  1.422e-02  -3.207 0.001426 ** 
+DIS         -1.570e+00  2.358e-01  -6.659 7.39e-11 ***
+RAD          2.548e-01  7.512e-02   3.392 0.000750 ***
+TAX         -1.265e-02  4.216e-03  -3.001 0.002829 ** 
+PTRATIO     -9.523e-01  1.540e-01  -6.185 1.30e-09 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 5.32 on 492 degrees of freedom
+Multiple R-squared:  0.6729,    Adjusted R-squared:  0.6643 
+F-statistic: 77.87 on 13 and 492 DF,  p-value: < 2.2e-16
+
+> linreg.pred = predict(linreg, newdata=test)
+> linreg.sse = sum((linreg.pred - test$MEDV)^2)
+> tree = rpart(MEDV ~ LAT+LON+CRIM+ZN+INDUS+CHAS+NOX+RM+AGE+DIS+RAD+TAX+PTRATIO, data=boston)
+> prp(tree)
+> tree.pred = predict(tree, newdata=test)
+> tree.sse = sum((tree.pred - test$MEDV)^2)
+> tree.see
+Error: object 'tree.see' not found
+> tree.sse
+[1] 3368.015
+> linreg.prp
+Error: object 'linreg.prp' not found
+> linreg.sse
+[1] 2918.31
+> library(e1071)
+> library(caret)
+> tr.control=trainControl(mthod="cv", number=10)
+Error in trainControl(mthod = "cv", number = 10) : 
+  unused argument (mthod = "cv")
+> tr.control=trainControl(method="cv", number=10)
+> cp.grid = expand.grid(.cp= (0:10)*0.001))
+Error: unexpected ')' in "cp.grid = expand.grid(.cp= (0:10)*0.001))"
+> cp.grid = expand.grid(.cp= (0:10)*0.001)
+> tr = train(MEDV ~ LAT+LON+CRIM+ZN+INDUS+CHAS+NOX+RM+AGE+DIS+RAD+TAX++PTRATIO, data=train, method="rpart", trControltr.control, tuneGrid=cpGrid)
+Error in train.default(x, y, weights = w, ...) : 
+  object 'trControltr.control' not found
+> tr = train(MEDV ~ LAT+LON+CRIM+ZN+INDUS+CHAS+NOX+RM+AGE+DIS+RAD+TAX++PTRATIO, data=train, method="rpart", trControl=tr.control, tuneGrid=cpGrid)
+Warning message:
+In nominalTrainWorkflow(x = x, y = y, wts = weights, info = trainInfo,  :
+  There were missing values in resampled performance measures.
+> tr
+CART 
+
+364 samples
+ 13 predictor
+
+No pre-processing
+Resampling: Cross-Validated (10 fold) 
+Summary of sample sizes: 327, 328, 327, 328, 327, 327, ... 
+Resampling results across tuning parameters:
+
+  cp    RMSE      Rsquared   MAE     
+  0.01  5.028369  0.7137640  3.313836
+  0.02  5.075840  0.7091248  3.372982
+  0.03  5.407331  0.6750467  3.673826
+  0.04  5.177442  0.6920182  3.540947
+  0.05  5.376513  0.6717921  3.692935
+  0.06  5.830884  0.6219764  4.123842
+  0.07  6.267686  0.5631298  4.564405
+  0.08  6.267686  0.5631298  4.564405
+  0.09  6.267686  0.5631298  4.564405
+  0.10  6.384366  0.5421435  4.670990
+  0.11  6.790851  0.4823579  5.040355
+  0.12  6.808843  0.4794014  5.137599
+  0.13  6.817366  0.4800799  5.143480
+  0.14  6.817366  0.4800799  5.143480
+  0.15  6.817366  0.4800799  5.143480
+  0.16  6.817366  0.4800799  5.143480
+  0.17  6.817366  0.4800799  5.143480
+  0.18  6.817366  0.4800799  5.143480
+  0.19  6.817366  0.4800799  5.143480
+  0.20  6.817366  0.4800799  5.143480
+  0.21  6.817366  0.4800799  5.143480
+  0.22  6.817366  0.4800799  5.143480
+  0.23  6.817366  0.4800799  5.143480
+  0.24  6.817366  0.4800799  5.143480
+  0.25  6.817366  0.4800799  5.143480
+  0.26  6.817366  0.4800799  5.143480
+  0.27  6.817366  0.4800799  5.143480
+  0.28  6.817366  0.4800799  5.143480
+  0.29  6.817366  0.4800799  5.143480
+  0.30  6.817366  0.4800799  5.143480
+  0.31  6.817366  0.4800799  5.143480
+  0.32  6.817366  0.4800799  5.143480
+  0.33  6.817366  0.4800799  5.143480
+  0.34  6.817366  0.4800799  5.143480
+  0.35  6.817366  0.4800799  5.143480
+  0.36  6.817366  0.4800799  5.143480
+  0.37  6.817366  0.4800799  5.143480
+  0.38  6.817366  0.4800799  5.143480
+  0.39  6.817366  0.4800799  5.143480
+  0.40  6.817366  0.4800799  5.143480
+  0.41  6.817366  0.4800799  5.143480
+  0.42  6.817366  0.4800799  5.143480
+  0.43  6.817366  0.4800799  5.143480
+  0.44  6.817366  0.4800799  5.143480
+  0.45  6.817366  0.4800799  5.143480
+  0.46  6.817366  0.4800799  5.143480
+  0.47  6.817366  0.4800799  5.143480
+  0.48  7.757814  0.4189721  5.753187
+  0.49  7.757814  0.4189721  5.753187
+  0.50  8.344992  0.3820135  6.178869
+
+RMSE was used to select the optimal model using the smallest value.
+The final value used for the model was cp = 0.01.
+> best.tree = tr$finalModel
+> prp(best.tree)
+> 

@@ -1,0 +1,198 @@
+> Claims = read.csv("ClaimsData.csv")
+> str(Claims)
+'data.frame':   458005 obs. of  16 variables:
+ $ age              : int  85 59 67 52 67 68 75 70 67 67 ...
+ $ alzheimers       : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ arthritis        : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ cancer           : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ copd             : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ depression       : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ diabetes         : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ heart.failure    : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ ihd              : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ kidney           : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ osteoporosis     : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ stroke           : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ reimbursement2008: int  0 0 0 0 0 0 0 0 0 0 ...
+ $ bucket2008       : int  1 1 1 1 1 1 1 1 1 1 ...
+ $ reimbursement2009: int  0 0 0 0 0 0 0 0 0 0 ...
+ $ bucket2009       : int  1 1 1 1 1 1 1 1 1 1 ...
+> table(Claims$bucket2009/nrow(Claims))
+
+2.18338227748605e-06 4.36676455497211e-06 6.55014683245816e-06 
+              307444                87099                40976 
+8.73352910994421e-06 1.09169113874303e-05 
+               19843                 2643 
+> table(Claims$bucket2009)/nrow(Claims)
+
+          1           2           3           4           5 
+0.671267781 0.190170413 0.089466272 0.043324855 0.005770679 
+> library(caTools)
+> set.seed(88)
+> spl = sample.split(Claims$bucket2009, SplitRatio = 0.6)
+> ClaimsTrain = subset(Claims, spl=TRUE)
+> ClaimsTest = subset(Claims, spl=FALSE)
+> mean(ClaimsTrain$Age)
+[1] NA
+Warning message:
+In mean.default(ClaimsTrain$Age) :
+  argument is not numeric or logical: returning NA
+> avg(ClaimsTrain$Age)
+Error in avg(ClaimsTrain$Age) : could not find function "avg"
+> str(ClaimsTrain$Age)
+ NULL
+> (ClaimsTrain$Age)
+NULL
+> ClaimsTrain$Age
+NULL
+> str(ClaimsTrain)
+'data.frame':   458005 obs. of  16 variables:
+ $ age              : int  85 59 67 52 67 68 75 70 67 67 ...
+ $ alzheimers       : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ arthritis        : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ cancer           : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ copd             : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ depression       : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ diabetes         : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ heart.failure    : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ ihd              : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ kidney           : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ osteoporosis     : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ stroke           : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ reimbursement2008: int  0 0 0 0 0 0 0 0 0 0 ...
+ $ bucket2008       : int  1 1 1 1 1 1 1 1 1 1 ...
+ $ reimbursement2009: int  0 0 0 0 0 0 0 0 0 0 ...
+ $ bucket2009       : int  1 1 1 1 1 1 1 1 1 1 ...
+> mean(ClaimsTrain)
+[1] NA
+Warning message:
+In mean.default(ClaimsTrain) :
+  argument is not numeric or logical: returning NA
+> mean(ClaimsTrain$Age)
+[1] NA
+Warning message:
+In mean.default(ClaimsTrain$Age) :
+  argument is not numeric or logical: returning NA
+> min(ClaimsTrain$Age)
+[1] Inf
+Warning message:
+In min(ClaimsTrain$Age) : no non-missing arguments to min; returning Inf
+> max(ClaimsTrain$Age)
+[1] -Inf
+Warning message:
+In max(ClaimsTrain$Age) : no non-missing arguments to max; returning -Inf
+> max(is.na(ClaimsTrain$Age)==FALSE)
+[1] -Inf
+Warning message:
+In max(is.na(ClaimsTrain$Age) == FALSE) :
+  no non-missing arguments to max; returning -Inf
+> 
+> 
+> table(ClaimsTrain$diabetes)
+
+     0      1 
+283751 174254 
+> 174254/(174254+283751)
+[1] 0.3804631
+> table(ClaimsTrain$Age)
+< table of extent 0 >
+> ClaimsTrain$Age[1:5]
+NULL
+> ClaimsTrain$Age[1]
+NULL
+> mean(ClaimsTrain$age)
+[1] 72.6284
+> table(ClaimsTest$bucket2009, ClaimsTest$bucket2008)
+   
+         1      2      3      4      5
+  1 275105  19534   8641   3727    437
+  2  40001  26893  11506   7298   1401
+  3  17685  11477   6778   4173    863
+  4   6708   4778   3496   3938    923
+  5    703    491    426    778    245
+> (275105+26893+6778+3938+245)/nrows(ClaimsTest)
+Error in nrows(ClaimsTest) : could not find function "nrows"
+> (275105+26893+6778+3938+245)/nrow(ClaimsTest)
+[1] 0.6833091
+> PenaltyMatrix = matrix(c(0,1,2,3,4,2,0,1,2,3,4,2,0,1,2,6,4,2,0,1,8,6,4,2,0), byrow=TRUE, nrow=5)
+> PenaltyMatrix
+     [,1] [,2] [,3] [,4] [,5]
+[1,]    0    1    2    3    4
+[2,]    2    0    1    2    3
+[3,]    4    2    0    1    2
+[4,]    6    4    2    0    1
+[5,]    8    6    4    2    0
+> as.matrix(table(ClaimsTest$bucket2009, ClaimsTest$bucket2008))*PenaltyMatrix
+   
+        1     2     3     4     5
+  1     0 19534 17282 11181  1748
+  2 80002     0 11506 14596  4203
+  3 70740 22954     0  4173  1726
+  4 40248 19112  6992     0   923
+  5  5624  2946  1704  1556     0
+> sum(as.matrix(table(ClaimsTest$bucket2009, ClaimsTest$bucket2008))*PenaltyMatrix)/nrow(ClaimsTest)
+[1] 0.7396207
+> table(ClaimsTest$bucket2009, ClaimsTest$bucket2008)
+   
+         1      2      3      4      5
+  1 275105  19534   8641   3727    437
+  2  40001  26893  11506   7298   1401
+  3  17685  11477   6778   4173    863
+  4   6708   4778   3496   3938    923
+  5    703    491    426    778    245
+> table(ClaimsTest$bucket2009==1, ClaimsTest$bucket2008==1)
+       
+         FALSE   TRUE
+  FALSE  85464  65097
+  TRUE   32339 275105
+> (85464+275105)
+[1] 360569
+> (85464+275105)/(85464+275105+65097+ 32339)
+[1] 0.78726
+> table(ClaimsTest$bucket2009, ClaimsTest$bucket2008==1)
+   
+     FALSE   TRUE
+  1  32339 275105
+  2  47098  40001
+  3  23291  17685
+  4  13135   6708
+  5   1940    703
+> library(rpart)
+> library(rpart.plot)
+> ClaimsTree = rpart(bucket2009 ~ age+arthritis+alzheimers+cancer+copd+depression+diabetes+heart.failure+ihd+kidney+stroke+bucket2008+reimbursement2008, data=ClaimsTrain, method="class", cp=0.00005)
+> prp(ClaimsTree)
+Warning message:
+labs do not fit even at cex 0.15, there may be some overplotting 
+> PredictTest=(ClaimsTest$bucket2009, PredictTest)
+Error: unexpected ',' in "PredictTest=(ClaimsTest$bucket2009,"
+> PredictTest=predict(CliamsTree, newdata=ClaimsTest, type="class")
+Error in predict(CliamsTree, newdata = ClaimsTest, type = "class") : 
+  object 'CliamsTree' not found
+> PredictTest=predict(ClaimsTree, newdata=ClaimsTest, type="class")
+> table(ClaimsTest$bucket2009, PredictTest)
+   PredictTest
+         1      2      3      4      5
+  1 287762  19478      0    204      0
+  2  47021  39873      0    205      0
+  3  20720  20105      0    151      0
+  4   8130  11339      0    374      0
+  5    882   1689      0     72      0
+> (287762+ 39873+374)/nrow(ClaimsTest)
+[1] 0.716169
+> sum(as.matrix(table(ClaimsTest$bucket2009, PredictTest))*PenaltyMatrix)/nrow(ClaimsTest)
+[1] 0.7625528
+> ClaimsTree = rpart(bucket2009 ~ age+arthritis+alzheimers+cancer+copd+depression+diabetes+heart.failure+ihd+kidney+stroke+bucket2008+reimbursement2008, data=ClaimsTrain, method="class", cp=0.00005,parms=list(loss=PenaltyMatrix))
+> PredictTest=predict(ClaimsTree, newdata=ClaimsTest, type="class")
+> table(ClaimsTest$bucket2009, PredictTest)
+   PredictTest
+         1      2      3      4      5
+  1 233636  66662   6569    577      0
+  2  17191  50637  17892   1379      0
+  3   8675  20609  10834    858      0
+  4   3176   8355   6920   1392      0
+  5    334    881   1063    365      0
+> (233636+50637+10834+1392)/nrow(ClaimsTest)
+[1] 0.6473707
+> sum(as.matrix(table(ClaimsTest$bucket2009, PredictTest))*PenaltyMatrix)/nrow(ClaimsTest)
+[1] 0.6388467
+> 
