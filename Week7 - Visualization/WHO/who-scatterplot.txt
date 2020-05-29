@@ -1,0 +1,143 @@
+> WHO = read.csv("WHO.csv")
+> str(WHO)
+'data.frame':   194 obs. of  13 variables:
+ $ Country                      : Factor w/ 194 levels "Afghanistan",..: 1 2 3 4 5 6 7 8 9 10 ...
+ $ Region                       : Factor w/ 6 levels "Africa","Americas",..: 3 4 1 4 1 2 2 4 6 4 ...
+ $ Population                   : int  29825 3162 38482 78 20821 89 41087 2969 23050 8464 ...
+ $ Under15                      : num  47.4 21.3 27.4 15.2 47.6 ...
+ $ Over60                       : num  3.82 14.93 7.17 22.86 3.84 ...
+ $ FertilityRate                : num  5.4 1.75 2.83 NA 6.1 2.12 2.2 1.74 1.89 1.44 ...
+ $ LifeExpectancy               : int  60 74 73 82 51 75 76 71 82 81 ...
+ $ ChildMortality               : num  98.5 16.7 20 3.2 163.5 ...
+ $ CellularSubscribers          : num  54.3 96.4 99 75.5 48.4 ...
+ $ LiteracyRate                 : num  NA NA NA NA 70.1 99 97.8 99.6 NA NA ...
+ $ GNI                          : num  1140 8820 8310 NA 5230 ...
+ $ PrimarySchoolEnrollmentMale  : num  NA NA 98.2 78.4 93.1 91.1 NA NA 96.9 NA ...
+ $ PrimarySchoolEnrollmentFemale: num  NA NA 96.4 79.4 78.2 84.5 NA NA 97.5 NA ...
+> plot(WHO$GNI, WHO$Fertility Rate)
+Error: unexpected symbol in "plot(WHO$GNI, WHO$Fertility Rate"
+> plot(WHO$GNI, WHO$FertilityRate)
+> install.packages("ggplot2")
+Installing package into ‘C:/Users/ASUS/AppData/Roaming/SPB_16.6/R/win-library/3.6’
+(as ‘lib’ is unspecified)
+--- Please select a CRAN mirror for use in this session ---
+trying URL 'https://mirrors.e-ducation.cn/CRAN/bin/windows/contrib/3.6/ggplot2_3.3.0.zip'
+Content type 'application/zip' length 4020979 bytes (3.8 MB)
+downloaded 3.8 MB
+
+package ‘ggplot2’ successfully unpacked and MD5 sums checked
+
+The downloaded binary packages are in
+        C:\Users\ASUS\AppData\Local\Temp\RtmpOYyDft\downloaded_packages
+> library(ggplot2)
+> scatterplot = ggplot(WHO, aes(x=GNI, y=FertilityRate))
+> scatterplot + geom_point()
+Warning message:
+Removed 35 rows containing missing values (geom_point). 
+> scatterplot + geom_line()
+Warning message:
+Removed 32 row(s) containing missing values (geom_path). 
+> scatterplot + geom_point()
+Warning message:
+Removed 35 rows containing missing values (geom_point). 
+> scatterplot + geom_point(color="blue", size=3, shape=17)
+Warning message:
+Removed 35 rows containing missing values (geom_point). 
+> scatterplot + geom_point(color="darkred", size=3, shape=8)
+Warning message:
+Removed 35 rows containing missing values (geom_point). 
+> 
+> scatterplot + geom_point(color="darkred", size=3, shape=8) + ggtitle("Fertility Rate Vs Gross NAtional Income")
+Warning message:
+Removed 35 rows containing missing values (geom_point). 
+> scatterplot + geom_point(color="darkred", size=3, shape=8) + ggtitle("Fertility Rate Vs Gross National Income")
+Warning message:
+Removed 35 rows containing missing values (geom_point). 
+> fertilityGNIplot = scatterplot + geom_point(color="darkred", size=3, shape=8) + ggtitle("Fertility Rate Vs Gross National Income")
+> pdf("MyPlot.pdf")
+> print(fertilityGNIplot)
+Warning message:
+Removed 35 rows containing missing values (geom_point). 
+> dev.off()
+windows 
+      2 
+> colors()
+  [1] "white"                "aliceblue"            "antiquewhite"        
+  [4] "antiquewhite1"        "antiquewhite2"        "antiquewhite3"       
+  [7] "antiquewhite4"        "aquamarine"           "aquamarine1"         
+ [10] "aquamarine2"          "aquamarine3"          "aquamarine4"         
+ [13] "azure"                "azure1"               "azure2"              
+ [16] "azure3"               "azure4"               "beige"               
+ [19] "bisque"               "bisque1"              "bisque2"             
+ [22] "bisque3"              "bisque4"              "black"                      
+.          
+.       
+[640] "violet"               "violetred"            "violetred1"          
+[643] "violetred2"           "violetred3"           "violetred4"          
+[646] "wheat"                "wheat1"               "wheat2"              
+[649] "wheat3"               "wheat4"               "whitesmoke"          
+[652] "yellow"               "yellow1"              "yellow2"             
+[655] "yellow3"              "yellow4"              "yellowgreen"         
+> scatterplot + geom_point(color="darkred", size=3, shape=15) + ggtitle("Fertility Rate Vs Gross National Income")
+Warning message:
+Removed 35 rows containing missing values (geom_point). 
+> ggplot(WHO, aes(x=GNI, y=FertilityRate, color=Region)) + geom_point()
+Warning message:
+Removed 35 rows containing missing values (geom_point). 
+> ggplot(WHO, aes(x=GNI, y=FertilityRate, color=LifeExpectancy)) + geom_point()
+Warning message:
+Removed 35 rows containing missing values (geom_point). 
+> ggplot(WHO, aes(x=FertilityRate, y=Under15)) + geom_point()
+Warning message:
+Removed 11 rows containing missing values (geom_point). 
+> ggplot(WHO, aes(x=log(FertilityRate), y=Under15)) + geom_point()
+Warning message:
+Removed 11 rows containing missing values (geom_point). 
+> model = lm(WHO$Under15 ~ log(FertilityRate), data=WHO)
+> summary(model)
+
+Call:
+lm(formula = WHO$Under15 ~ log(FertilityRate), data = WHO)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-10.3131  -1.7742   0.0446   1.7440   7.7174 
+
+Coefficients:
+                   Estimate Std. Error t value Pr(>|t|)    
+(Intercept)          7.6540     0.4478   17.09   <2e-16 ***
+log(FertilityRate)  22.0547     0.4175   52.82   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 2.65 on 181 degrees of freedom
+  (11 observations deleted due to missingness)
+Multiple R-squared:  0.9391,    Adjusted R-squared:  0.9387 
+F-statistic:  2790 on 1 and 181 DF,  p-value: < 2.2e-16
+
+> ggplot(WHO, aes(x=log(FertilityRate), y=Under15)) + geom_point() + stat_smooth(method=lm)
+`geom_smooth()` using formula 'y ~ x'
+Warning messages:
+1: Removed 11 rows containing non-finite values (stat_smooth). 
+2: Removed 11 rows containing missing values (geom_point). 
+> ggplot(WHO, aes(x=log(FertilityRate), y=Under15)) + geom_point() + stat_smooth(method=lm, level = 0.99)
+`geom_smooth()` using formula 'y ~ x'
+Warning messages:
+1: Removed 11 rows containing non-finite values (stat_smooth). 
+2: Removed 11 rows containing missing values (geom_point). 
+> ggplot(WHO, aes(x=log(FertilityRate), y=Under15)) + geom_point() + stat_smooth(method=lm, se=False)
+Error in layer(data = data, mapping = mapping, stat = StatSmooth, geom = geom,  : 
+  object 'False' not found
+> ggplot(WHO, aes(x=log(FertilityRate), y=Under15)) + geom_point() + stat_smooth(method=lm, se=FALSE)
+`geom_smooth()` using formula 'y ~ x'
+Warning messages:
+1: Removed 11 rows containing non-finite values (stat_smooth). 
+2: Removed 11 rows containing missing values (geom_point). 
+> ggplot(WHO, aes(x=log(FertilityRate), y=Under15)) + geom_point() + stat_smooth(method=lm, se=FALSE, color="orange"))
+Error: unexpected ')' in "ggplot(WHO, aes(x=log(FertilityRate), y=Under15)) + geom_point() + stat_smooth(method=lm, se=FALSE, color="orange"))"
+> ggplot(WHO, aes(x=log(FertilityRate), y=Under15)) + geom_point() + stat_smooth(method=lm, se=FALSE, color="orange")
+`geom_smooth()` using formula 'y ~ x'
+Warning messages:
+1: Removed 11 rows containing non-finite values (stat_smooth). 
+2: Removed 11 rows containing missing values (geom_point). 
+> 

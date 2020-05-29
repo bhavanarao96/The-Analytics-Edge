@@ -1,0 +1,104 @@
+> edges = read.csv("edges.csv")
+> users = read.csv("users.csv")
+> str(users)
+'data.frame':   59 obs. of  4 variables:
+ $ id    : int  3981 3982 3983 3984 3985 3986 3987 3988 3989 3990 ...
+ $ gender: Factor w/ 3 levels "","A","B": 2 3 3 3 3 3 2 3 3 2 ...
+ $ school: Factor w/ 3 levels "","A","AB": 2 1 1 1 1 2 1 1 2 1 ...
+ $ locale: Factor w/ 3 levels "","A","B": 3 3 3 3 3 3 2 3 3 2 ...
+> str(edges)
+'data.frame':   146 obs. of  2 variables:
+ $ V1: int  4019 4023 4023 4027 3988 3982 3994 3998 3993 3982 ...
+ $ V2: int  4026 4031 4030 4032 4021 3986 3998 3999 3995 4021 ...
+> count(edges)
+Error in count(edges) : could not find function "count"
+> summary(edges)
+       V1             V2      
+ Min.   : 594   Min.   :3986  
+ 1st Qu.:3987   1st Qu.:4009  
+ Median :3997   Median :4021  
+ Mean   :3929   Mean   :4018  
+ 3rd Qu.:4008   3rd Qu.:4030  
+ Max.   :4031   Max.   :4038  
+> for (var in users) {
++ t)
+Error: unexpected ')' in:
+"for (var in users) {
+t)"
+> str(users$school)
+ Factor w/ 3 levels "","A","AB": 2 1 1 1 1 2 1 1 2 1 ...
+> table(users$locale, users$school =="")
+   
+    FALSE TRUE
+        0    3
+  A     0    6
+  B    19   31
+> str(users$locale)
+ Factor w/ 3 levels "","A","B": 3 3 3 3 3 3 2 3 3 2 ...
+> table(users$gender, users$school)
+   
+        A AB
+     1  1  0
+  A 11  3  1
+  B 28 13  1
+> install.packages("igraph")
+Installing package into ‘C:/Users/ASUS/AppData/Roaming/SPB_16.6/R/win-library/3.6’
+(as ‘lib’ is unspecified)
+trying URL 'https://mirrors.e-ducation.cn/CRAN/bin/windows/contrib/3.6/igraph_1.2.5.zip'
+Content type 'application/zip' length 9168093 bytes (8.7 MB)
+downloaded 8.7 MB
+
+package ‘igraph’ successfully unpacked and MD5 sums checked
+
+The downloaded binary packages are in
+        C:\Users\ASUS\AppData\Local\Temp\Rtmp849s0A\downloaded_packages
+> library(igraph)
+
+Attaching package: ‘igraph’
+
+The following objects are masked from ‘package:stats’:
+
+    decompose, spectrum
+
+The following object is masked from ‘package:base’:
+
+    union
+
+> ?graph.data.frame
+> g = graph.data.frame(edges, FALSE, users)
+> plot(g, vertex.size=5, vertex.label=NA)
+> sum(degree(g) > 9)
+[1] 9
+> V(g)$size = degree(g)/2+2
+> plot(g, vertex.label=NA)
+> max(degree(g))
+[1] 18
+> min(degree(g))
+[1] 0
+> V(g)$color = "black"
+> V(g)$color[V(g)$gender == "A"] = "red"
+> 
+> V(g)$color[V(g)$gender == "B"] = "gray"
+> 
+> plot(g, vertex.label=NA)
+> V(g)$color = "black"
+> V(g)$color[V(g)$school == "A"] = "red"
+> V(g)$color[V(g)$school == "AB"] = "gray"
+> plot(g, vertex.label=NA)
+> table(users$school)
+
+    A AB 
+40 17  2 
+> V(g)$color = "black"
+> V(g)$color[V(g)$school == "A"] = "red"
+> V(g)$color[V(g)$school == "AB"] = "blue"
+> 
+> plot(g, vertex.label=NA)
+> V(g)$color[V(g)$school == "AB"] = "yellow"
+> plot(g, vertex.label=NA)
+> V(g)$color = "black"
+> V(g)$color[V(g)$locale == "A"] = "red"
+> V(g)$color[V(g)$locale == "B"] = "gray"
+> plot(g, vertex.label=NA)
+> ?igraph.plotting 
+> 

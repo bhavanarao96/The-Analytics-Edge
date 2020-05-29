@@ -1,0 +1,130 @@
+> library(ggplot2)
+> intl = read.csv("intl.csv")
+Error in file(file, "rt") : cannot open the connection
+In addition: Warning message:
+In file(file, "rt") :
+  cannot open file 'intl.csv': No such file or directory
+> intl = read.csv("intl.csv")
+> str(intl)
+'data.frame':   8 obs. of  2 variables:
+ $ Region       : Factor w/ 8 levels "Africa","Asia",..: 2 3 6 4 5 1 7 8
+ $ PercentOfIntl: num  0.531 0.201 0.098 0.09 0.054 0.02 0.015 0.002
+> ggplot(intl, aes(x=Region , y=PercentOfIntl)) + geom_bar(stat="identity") + geom_text(aes(label=PercentOfIntl))
+> intl = transform(intl, Region = reorder(Region, ~PercentOfIntl))
+Error in tapply(X = X, INDEX = x, FUN = FUN, ...) : 
+  arguments must have same length
+> intl = transform(intl, Region = reorder(Region, -PercentOfIntl))
+> str(intl)
+'data.frame':   8 obs. of  2 variables:
+ $ Region       : Factor w/ 8 levels "Asia","Europe",..: 1 2 3 4 5 6 7 8
+  ..- attr(*, "scores")= num [1:8(1d)] -0.02 -0.531 -0.201 -0.09 -0.054 -0.098 -0.015 -0.002
+  .. ..- attr(*, "dimnames")=List of 1
+  .. .. ..$ : chr  "Africa" "Asia" "Europe" "Latin Am. & Caribbean" ...
+ $ PercentOfIntl: num  0.531 0.201 0.098 0.09 0.054 0.02 0.015 0.002
+> intl$PercentOfIntl = intl$PercentOfIntl * 100
+> ggplot(intl, aes(x=Region , y=PercentOfIntl)) + geom_bar(stat="identity") + geom_text(aes(label=PercentOfIntl))
+> ggplot(intl, aes(x=Region , y=PercentOfIntl)) + geom_bar(stat="identity", fill = "dark blue") + geom_text(aes(label=PercentOfIntl), vjust = 0.4) +
++ ylab("Percent of International Students") + 
++ theme(axis.title.x = element_blank(), axis.text.x = element_text(angle = 45), hjust)
+Error in mget(args, envir = env) : object 'hjust' not found
+> theme(axis.title.x = element_blank(), axis.text.x = element_text(angle = 45, hjust=1)
++ f]]\\
+Error: unexpected symbol in:
+"theme(axis.title.x = element_blank(), axis.text.x = element_text(angle = 45, hjust=1)
+f"
+> ggplot(intl, aes(x=Region , y=PercentOfIntl)) + geom_bar(stat="identity", fill = "dark blue") + geom_text(aes(label=PercentOfIntl), vjust = 0.4) +
++ ylab("Percent of International Students") +
++ theme(axis.title.x = element_blank(), axis.text.x = element_text(angle = 45, hjust=1))
+> library(ggmap)
+> intlall = read.csv("intl.csv", stringsAsFactors-FALSE)
+Error in read.table(file = file, header = header, sep = sep, quote = quote,  : 
+  object 'stringsAsFactors' not found
+> intlall = read.csv("intlall.csv", stringsAsFactors-FALSE)
+Error in file(file, "rt") : cannot open the connection
+In addition: Warning message:
+In file(file, "rt") :
+  cannot open file 'intlall.csv': No such file or directory
+> intlall = read.csv("intlall.csv", stringsAsFactors-FALSE)
+Error in read.table(file = file, header = header, sep = sep, quote = quote,  : 
+  object 'stringsAsFactors' not found
+> intlall = read.csv("intlall.csv", stringsAsFactors=FALSE)
+> str(intlall)
+'data.frame':   114 obs. of  7 variables:
+ $ Citizenship    : chr  "Albania" "Antigua and Barbuda" "Argentina" "Armenia" ...
+ $ UG             : int  3 NA NA 3 6 NA 2 3 1 1 ...
+ $ G              : int  1 NA 19 2 32 11 NA 7 NA 8 ...
+ $ SpecialUG      : int  0 NA NA NA NA NA NA NA NA NA ...
+ $ SpecialG       : int  0 1 NA NA NA NA NA NA NA NA ...
+ $ ExhangeVisiting: int  0 NA NA NA 1 5 NA NA NA 7 ...
+ $ Total          : int  4 1 19 5 39 16 2 10 1 16 ...
+> head(intlall)
+          Citizenship UG  G SpecialUG SpecialG ExhangeVisiting Total
+1             Albania  3  1         0        0               0     4
+2 Antigua and Barbuda NA NA        NA        1              NA     1
+3           Argentina NA 19        NA       NA              NA    19
+4             Armenia  3  2        NA       NA              NA     5
+5           Australia  6 32        NA       NA               1    39
+6             Austria NA 11        NA       NA               5    16
+> intlall(is.na(intlall)) = 0
+Error in intlall(is.na(intlall)) = 0 : 
+  could not find function "intlall<-"
+> intlall[is.na(intlall)] = 0
+> head(intlall)
+          Citizenship UG  G SpecialUG SpecialG ExhangeVisiting Total
+1             Albania  3  1         0        0               0     4
+2 Antigua and Barbuda  0  0         0        1               0     1
+3           Argentina  0 19         0        0               0    19
+4             Armenia  3  2         0        0               0     5
+5           Australia  6 32         0        0               1    39
+6             Austria  0 11         0        0               5    16
+> world_map = map_data("world")
+> str(wolrd_map)
+Error in str(wolrd_map) : object 'wolrd_map' not found
+> str(world_map)
+'data.frame':   99338 obs. of  6 variables:
+ $ long     : num  -69.9 -69.9 -69.9 -70 -70.1 ...
+ $ lat      : num  12.5 12.4 12.4 12.5 12.5 ...
+ $ group    : num  1 1 1 1 1 1 1 1 1 1 ...
+ $ order    : int  1 2 3 4 5 6 7 8 9 10 ...
+ $ region   : chr  "Aruba" "Aruba" "Aruba" "Aruba" ...
+ $ subregion: chr  NA NA NA NA ...
+> world_map = merge(world_map, intlall, by.x="region", by.y="Citizenship")
+> ggplot(world_map, aes(x=long, y=lat, group=group)) + geom_polygon(fill="white",color="black") + coord_map("mercator")
+Error in loadNamespace(name) : there is no package called ‘mapproj’
+> world_map= world_map(order(world_map$group, world_map$order))
+Error in world_map(order(world_map$group, world_map$order)) : 
+  could not find function "world_map"
+> world_map= World_map(order(world_map$group, world_map$order))
+Error in World_map(order(world_map$group, world_map$order)) : 
+  could not find function "World_map"
+> world_map= World_map[order(world_map$group, world_map$order)]
+Error: object 'World_map' not found
+> world_map= world_map[order(world_map$group, world_map$order)]
+Error in `[.data.frame`(world_map, order(world_map$group, world_map$order)) : 
+  undefined columns selected
+> world_map= world_map[order(world_map$group, world_map$order),]
+> ggplot(world_map, aes(x=long, y=lat, group=group)) + geom_polygon(fill="white",color="black") + coord_map("mercator")
+Error in loadNamespace(name) : there is no package called ‘mapproj’
+> intlall$Citizenship[intlall$Citizenship == "China (People's Republic Of)"] = "China"
+> world_map = merge(world_map("world"), intlall, by.x="region", by.y="Citizenship")
+Error in world_map("world") : could not find function "world_map"
+> world_map = merge(map+data("world"), intlall, by.x="region", by.y="Citizenship")
+Error in map + data("world") : non-numeric argument to binary operator
+In addition: Warning message:
+In data("world") : data set ‘world’ not found
+> world_map = merge(map_data("world"), intlall, by.x="region", by.y="Citizenship")
+> ggplot(world_map, aes(x=long, y=lat, group=group) + geom_polygon(aes(fill=Total), color="black") +
++ coord_map("mercator")
++ )
+Error: Mapping should be created with `aes() or `aes_()`.
+Run `rlang::last_error()` to see where the error occurred.
+> ggplot(world_map, aes(x=long, y=lat, group=group)) + geom_polygon(aes(fill=Total), color="black") +
++ coord_map("mercator")
+Error in loadNamespace(name) : there is no package called ‘mapproj’
+> ggplot(world_map, aes(x=long, y=lat, group=group)) + geom_polygon(aes(fill=Total), color="black") +
++ coord_map("mercator")
+Error in loadNamespace(name) : there is no package called ‘mapproj’
+> ggplot(world_map, aes(x=long, y=lat, group=group)) + geom_polygon(aes(fill=Total), color="black") +
++ coord_map("ortho", orientation=c(20,30,0))
+Error in loadNamespace(name) : there is no package called ‘mapproj’
+> 

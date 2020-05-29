@@ -1,0 +1,260 @@
+
+R version 3.6.3 (2020-02-29) -- "Holding the Windsock"
+Copyright (C) 2020 The R Foundation for Statistical Computing
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(ggplot2)
+Error: package or namespace load failed for ‘ggplot2’ in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]):
+ there is no package called ‘glue’
+> library("ggplot2")
+Error: package or namespace load failed for ‘ggplot2’ in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]):
+ there is no package called ‘glue’
+> install.packages('glue')
+Installing package into ‘C:/Users/ASUS/AppData/Roaming/SPB_16.6/R/win-library/3.6’
+(as ‘lib’ is unspecified)
+--- Please select a CRAN mirror for use in this session ---
+trying URL 'https://mirrors.e-ducation.cn/CRAN/bin/windows/contrib/3.6/glue_1.4.0.zip'
+Content type 'application/zip' length 157927 bytes (154 KB)
+downloaded 154 KB
+
+package ‘glue’ successfully unpacked and MD5 sums checked
+
+The downloaded binary packages are in
+        C:\Users\ASUS\AppData\Local\Temp\Rtmp849s0A\downloaded_packages
+> library("ggplot2")
+> library(maps)
+> library(ggmap)
+Google's Terms of Service: https://cloud.google.com/maps-platform/terms/.
+Please cite ggmap if you use it! See citation("ggmap") for details.
+> statesMap = map_data("state")
+> str(statesMap)
+'data.frame':   15537 obs. of  6 variables:
+ $ long     : num  -87.5 -87.5 -87.5 -87.5 -87.6 ...
+ $ lat      : num  30.4 30.4 30.4 30.3 30.3 ...
+ $ group    : num  1 1 1 1 1 1 1 1 1 1 ...
+ $ order    : int  1 2 3 4 5 6 7 8 9 10 ...
+ $ region   : chr  "alabama" "alabama" "alabama" "alabama" ...
+ $ subregion: chr  NA NA NA NA ...
+> table(statesMap$group)
+
+   1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16 
+ 202  149  312  516   79   91   94   10  872  381  233  329  257  256  113  397 
+  17   18   19   20   21   22   23   24   25   26   27   28   29   30   31   32 
+ 650  399  566   36  220   30  460  370  373  382  315  238  208   70  125  205 
+  33   34   35   36   37   38   39   40   41   42   43   44   45   46   47   48 
+  78   16  290   21  168   37  733   12  105  238  284  236  172   66  304  166 
+  49   50   51   52   53   54   55   56   57   58   59   60   61   62   63 
+ 289 1088   59  129   96   15  623   17   17   19   44  448  373  388   68 
+> ggplot(statesMap, aes(x = long, y = lat, group = group)) + geom_polygon(fill = "white", color = "black")
+> polling = read.csv("PollingImputed.csv")
+> library(caTools)
+> str(polling)
+'data.frame':   145 obs. of  7 variables:
+ $ State     : Factor w/ 50 levels "Alabama","Alaska",..: 1 1 2 2 3 3 3 4 4 4 ...
+ $ Year      : int  2004 2008 2004 2008 2004 2008 2012 2004 2008 2012 ...
+ $ Rasmussen : int  11 21 19 16 5 5 8 7 10 13 ...
+ $ SurveyUSA : int  18 25 21 18 15 3 5 5 7 21 ...
+ $ DiffCount : int  5 5 1 6 8 9 4 8 5 2 ...
+ $ PropR     : num  1 1 1 1 1 ...
+ $ Republican: int  1 1 1 1 1 1 1 1 1 1 ...
+> Train = subset(polling, )
+> Train = subset(polling, Year = c(2004,2008))
+> str(Train)
+'data.frame':   145 obs. of  7 variables:
+ $ State     : Factor w/ 50 levels "Alabama","Alaska",..: 1 1 2 2 3 3 3 4 4 4 ...
+ $ Year      : int  2004 2008 2004 2008 2004 2008 2012 2004 2008 2012 ...
+ $ Rasmussen : int  11 21 19 16 5 5 8 7 10 13 ...
+ $ SurveyUSA : int  18 25 21 18 15 3 5 5 7 21 ...
+ $ DiffCount : int  5 5 1 6 8 9 4 8 5 2 ...
+ $ PropR     : num  1 1 1 1 1 ...
+ $ Republican: int  1 1 1 1 1 1 1 1 1 1 ...
+> Train = subset(polling, Year = 2004 or Year =2008)
+Error: unexpected symbol in "Train = subset(polling, Year = 2004 or"
+> Train = subset(polling, Year == 2004 | Year==2008)
+> str(Train)
+'data.frame':   100 obs. of  7 variables:
+ $ State     : Factor w/ 50 levels "Alabama","Alaska",..: 1 1 2 2 3 3 4 4 5 5 ...
+ $ Year      : int  2004 2008 2004 2008 2004 2008 2004 2008 2004 2008 ...
+ $ Rasmussen : int  11 21 19 16 5 5 7 10 -11 -27 ...
+ $ SurveyUSA : int  18 25 21 18 15 3 5 7 -11 -24 ...
+ $ DiffCount : int  5 5 1 6 8 9 8 5 -8 -5 ...
+ $ PropR     : num  1 1 1 1 1 1 1 1 0 0 ...
+ $ Republican: int  1 1 1 1 1 1 1 1 0 0 ...
+> Test = subset(polling, Year == 2012)
+> mod2 = glm(Republican~SurveyUSA+DiffCount, data=Train, family="binomial")
+> TestPrediction = predict(mod2, newdata=Test, type="response")
+> TestPredictionBinary = as.numeric(TestPrediction > 0.5)
+> predictionDataFrame = data.frame(TestPrediction, TestPredictionBinary, Test$State)
+> table(predictionDataFrame$TestPredictionBinary)
+
+ 0  1 
+23 22 
+> mean(TestPrediction)
+[1] 0.4852626
+> predictionDataFrame$region = tolower(predictionDataFrame$Test.State)
+> predictionMap = merge(statesMap, predictionDataFrame, by = "region")
+> predictionMap = predictionMap[order(predictionMap$order),]
+> str(predictionMap)
+'data.frame':   15034 obs. of  9 variables:
+ $ region              : chr  "arizona" "arizona" "arizona" "arizona" ...
+ $ long                : num  -115 -115 -115 -115 -115 ...
+ $ lat                 : num  35 35.1 35.1 35.2 35.2 ...
+ $ group               : num  2 2 2 2 2 2 2 2 2 2 ...
+ $ order               : int  204 205 206 207 208 209 210 211 212 213 ...
+ $ subregion           : chr  NA NA NA NA ...
+ $ TestPrediction      : num  0.974 0.974 0.974 0.974 0.974 ...
+ $ TestPredictionBinary: num  1 1 1 1 1 1 1 1 1 1 ...
+ $ Test.State          : Factor w/ 50 levels "Alabama","Alaska",..: 3 3 3 3 3 3 3 3 3 3 ...
+> str(statesMap)
+'data.frame':   15537 obs. of  6 variables:
+ $ long     : num  -87.5 -87.5 -87.5 -87.5 -87.6 ...
+ $ lat      : num  30.4 30.4 30.4 30.3 30.3 ...
+ $ group    : num  1 1 1 1 1 1 1 1 1 1 ...
+ $ order    : int  1 2 3 4 5 6 7 8 9 10 ...
+ $ region   : chr  "alabama" "alabama" "alabama" "alabama" ...
+ $ subregion: chr  NA NA NA NA ...
+> ?merge
+starting httpd help server ... done
+> ggplot(predictionMap, aes(x = long, y = lat, group = group, fill = TestPredictionBinary)) + geom_polygon(color = "black")
+> ggplot(predictionMap, aes(x = long, y = lat, group = group, fill = TestPredictionBinary))+ geom_polygon(color = "black") + scale_fill_gradient(low = "blue", high = "red", guide = "legend", breaks= c(0,1), labels = c("Democrat", "Republican"), name = "Prediction 2012")
+> ggplot(predictionMap, aes(x = long, y = lat, group = group, fill = TestPrediction))+ geom_polygon(color = "black") + scale_fill_gradient(low = "blue", high = "red", guide = "legend", breaks= c(0,1), labels = c("Democrat", "Republican"), name = "Prediction 2012")
+> summary(predictionMap$TestPrediction)
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+0.0000001 0.0000926 0.9506137 0.5235147 0.9973641 0.9998655 
+> Train$State == Florida
+Error: object 'Florida' not found
+> Train$State == florida
+Error: object 'florida' not found
+> Train$State == 'florida'
+  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [13] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [25] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [37] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [49] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [61] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [73] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [85] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [97] FALSE FALSE FALSE FALSE
+> table(Train$State)
+
+       Alabama         Alaska        Arizona       Arkansas     California 
+             2              2              2              2              2 
+      Colorado    Connecticut       Delaware        Florida        Georgia 
+             2              2              2              2              2 
+        Hawaii          Idaho       Illinois        Indiana           Iowa 
+             2              2              2              2              2 
+        Kansas       Kentucky      Louisiana          Maine       Maryland 
+             2              2              2              2              2 
+ Massachusetts       Michigan      Minnesota    Mississippi       Missouri 
+             2              2              2              2              2 
+       Montana       Nebraska         Nevada  New Hampshire     New Jersey 
+             2              2              2              2              2 
+    New Mexico       New York North Carolina   North Dakota           Ohio 
+             2              2              2              2              2 
+      Oklahoma         Oregon   Pennsylvania   Rhode Island South Carolina 
+             2              2              2              2              2 
+  South Dakota      Tennessee          Texas           Utah        Vermont 
+             2              2              2              2              2 
+      Virginia     Washington  West Virginia      Wisconsin        Wyoming 
+             2              2              2              2              2 
+> table(Test$State)
+
+       Alabama         Alaska        Arizona       Arkansas     California 
+             0              0              1              1              1 
+      Colorado    Connecticut       Delaware        Florida        Georgia 
+             1              1              0              1              1 
+        Hawaii          Idaho       Illinois        Indiana           Iowa 
+             1              1              1              1              1 
+        Kansas       Kentucky      Louisiana          Maine       Maryland 
+             1              1              1              1              1 
+ Massachusetts       Michigan      Minnesota    Mississippi       Missouri 
+             1              1              1              1              1 
+       Montana       Nebraska         Nevada  New Hampshire     New Jersey 
+             1              1              1              1              1 
+    New Mexico       New York North Carolina   North Dakota           Ohio 
+             1              1              1              1              1 
+      Oklahoma         Oregon   Pennsylvania   Rhode Island South Carolina 
+             1              1              1              1              1 
+  South Dakota      Tennessee          Texas           Utah        Vermont 
+             1              1              1              1              0 
+      Virginia     Washington  West Virginia      Wisconsin        Wyoming 
+             1              1              1              1              0 
+> str(Test)
+'data.frame':   45 obs. of  7 variables:
+ $ State     : Factor w/ 50 levels "Alabama","Alaska",..: 3 4 5 6 7 9 10 11 12 13 ...
+ $ Year      : int  2012 2012 2012 2012 2012 2012 2012 2012 2012 2012 ...
+ $ Rasmussen : int  8 13 -12 3 -7 2 5 -22 31 -22 ...
+ $ SurveyUSA : int  5 21 -14 -2 -13 0 8 -24 24 -16 ...
+ $ DiffCount : int  4 2 -6 -5 -8 6 4 -2 1 -5 ...
+ $ PropR     : num  0.833 1 0 0.308 0 ...
+ $ Republican: int  1 1 0 0 0 0 1 0 1 0 ...
+> Test
+             State Year Rasmussen SurveyUSA DiffCount      PropR Republican
+7          Arizona 2012         8         5         4 0.83333333          1
+10        Arkansas 2012        13        21         2 1.00000000          1
+13      California 2012       -12       -14        -6 0.00000000          0
+16        Colorado 2012         3        -2        -5 0.30769231          0
+19     Connecticut 2012        -7       -13        -8 0.00000000          0
+24         Florida 2012         2         0         6 0.66666667          0
+27         Georgia 2012         5         8         4 1.00000000          1
+30          Hawaii 2012       -22       -24        -2 0.00000000          0
+33           Idaho 2012        31        24         1 1.00000000          1
+36        Illinois 2012       -22       -16        -5 0.00000000          0
+39         Indiana 2012         9        18         3 1.00000000          1
+42            Iowa 2012         1        -2        -2 0.40000000          0
+45          Kansas 2012         6         9         1 1.00000000          1
+48        Kentucky 2012        11        14         1 1.00000000          1
+51       Louisiana 2012        16        21         2 1.00000000          1
+54           Maine 2012       -12        -7        -6 0.00000000          0
+57        Maryland 2012       -23       -29        -4 0.00000000          0
+60   Massachusetts 2012       -19       -30        -8 0.00000000          0
+63        Michigan 2012        -5       -11       -10 0.08333333          0
+66       Minnesota 2012        -5       -11        -5 0.14285714          0
+69     Mississippi 2012         9         8         1 1.00000000          1
+72        Missouri 2012        11         7         8 1.00000000          1
+75         Montana 2012        10        12         5 1.00000000          1
+78        Nebraska 2012        19        25         2 1.00000000          1
+81          Nevada 2012        -2        -4       -10 0.00000000          0
+84   New Hampshire 2012        -2       -11        -8 0.00000000          0
+87      New Jersey 2012       -12       -14        -9 0.00000000          0
+90      New Mexico 2012       -11        -7        -5 0.00000000          0
+93        New York 2012       -20       -29        -5 0.00000000          0
+96  North Carolina 2012         6         5         3 0.66666667          1
+99    North Dakota 2012        14        21         4 1.00000000          1
+102           Ohio 2012         0        -5       -16 0.00000000          0
+105       Oklahoma 2012        34        24         1 1.00000000          1
+108         Oregon 2012       -12        -7        -4 0.00000000          0
+111   Pennsylvania 2012        -5         0       -13 0.00000000          0
+114   Rhode Island 2012       -28       -17        -2 0.00000000          0
+117 South Carolina 2012        19        23         1 1.00000000          1
+120   South Dakota 2012         9        16         1 1.00000000          1
+123      Tennessee 2012        32        24         1 1.00000000          1
+126          Texas 2012         9        12         4 1.00000000          1
+129           Utah 2012        34        22         1 1.00000000          1
+134       Virginia 2012         2        -2        -4 0.33333333          0
+137     Washington 2012       -13       -14        -8 0.00000000          0
+140  West Virginia 2012        14        19         1 1.00000000          1
+143      Wisconsin 2012         0        -4        -8 0.00000000          0
+> ?geom_polygon
+> ggplot(predictionMap, aes(x = long, y = lat, group = group, fill = TestPrediction))+ geom_polygon(color = "black", linetype="dashed") + scale_fill_gradient(low = "blue", high = "red", guide = "legend", breaks= c(0,1), labels = c("Democrat", "Republican"), name = "Prediction 2012")
+> ggplot(predictionMap, aes(x = long, y = lat, group = group, fill = TestPrediction))+ geom_polygon(color = "black", size=3) + scale_fill_gradient(low = "blue", high = "red", guide = "legend", breaks= c(0,1), labels = c("Democrat", "Republican"), name = "Prediction 2012")
+> ggplot(predictionMap, aes(x = long, y = lat, group = group, fill = TestPrediction))+ geom_polygon(color = "black", aplha=0.3) + scale_fill_gradient(low = "blue", high = "red", guide = "legend", breaks= c(0,1), labels = c("Democrat", "Republican"), name = "Prediction 2012")
+Warning message:
+Ignoring unknown parameters: aplha 
+> 
+> ggplot(predictionMap, aes(x = long, y = lat, group = group, fill = TestPrediction))+ geom_polygon(color = "black", alpha=0.3) + scale_fill_gradient(low = "blue", high = "red", guide = "legend", breaks= c(0,1), labels = c("Democrat", "Republican"), name = "Prediction 2012")
+> 

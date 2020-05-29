@@ -1,0 +1,245 @@
+> tweets = read.csv("tweets.csv", stringsAsFactors=FALSE)
+> str(tweets)
+'data.frame':   1181 obs. of  2 variables:
+ $ Tweet: chr  "I have to say, Apple has by far the best customer care service I have ever received! @Apple @AppStore" "iOS 7 is so fricking smooth & beautiful!! #ThanxApple @Apple" "LOVE U @APPLE" "Thank you @apple, loving my new iPhone 5S!!!!!  #apple #iphone5S pic.twitter.com/XmHJCU4pcb" ...
+ $ Avg  : num  2 2 1.8 1.8 1.8 1.8 1.8 1.6 1.6 1.6 ...
+> tweets$Negative = as.factor(tweets$Avg <= -1)
+> table(tweets$Negative)
+
+FALSE  TRUE 
+  999   182 
+> install.packages("tm")
+Installing package into 
+(as 
+--- Please select a CRAN mirror for use in this session ---
+also installing the dependencies 
+
+The downloaded binary packages are in
+        C:\Users\ASUS\AppData\Local\Temp\Rtmpqmtl0e\downloaded_packages
+> library("tm")
+Loading required package: NLP
+> library(tm)
+> install.packages("SnowballC")
+Installing package into 
+(as 
+...
+The downloaded binary packages are in
+        C:\Users\ASUS\AppData\Local\Temp\Rtmpqmtl0e\downloaded_packages
+> library(SnowballC)
+> corpus = Corpus(VectorSource(tweets$Tweet))
+> corpus
+<<SimpleCorpus>>
+Metadata:  corpus specific: 1, document level (indexed): 0
+Content:  documents: 1181
+> corpus[[1]]
+<<PlainTextDocument>>
+Metadata:  7
+Content:  chars: 101
+> corpus = tm_map(corpus, tolower)
+Warning message:
+In tm_map.SimpleCorpus(corpus, tolower) : transformation drops documents
+> corpus[[1]]
+<<PlainTextDocument>>
+Metadata:  7
+Content:  chars: 101
+> corpus[1]
+<<SimpleCorpus>>
+Metadata:  corpus specific: 1, document level (indexed): 0
+Content:  documents: 1
+> corpus[[[1]]]
+Error: unexpected '[' in "corpus[[["
+> corpus[[1]]
+<<PlainTextDocument>>
+Metadata:  7
+Content:  chars: 101
+> corpus = tm_map(corpus, removePunctuation)
+Warning message:
+In tm_map.SimpleCorpus(corpus, removePunctuation) :
+  transformation drops documents
+> Sys.setlocale("LC_ALL", "C")
+[1] "C"
+> corpus = Corpus(VectorSource(tweets$Tweet))
+> corpus[[1]]
+<<PlainTextDocument>>
+Metadata:  7
+Content:  chars: 101
+> corpus = tm_map(corpus, tolower)
+Warning message:
+In tm_map.SimpleCorpus(corpus, tolower) : transformation drops documents
+> corpus = tm_map(corpus, removePunctuation)
+Warning message:
+In tm_map.SimpleCorpus(corpus, removePunctuation) :
+  transformation drops documents
+> stopwords("english")[1:10]
+ [1] "i"         "me"        "my"        "myself"    "we"        "our"      
+ [7] "ours"      "ourselves" "you"       "your"     
+> corpus = tm_map(corpus, removeWords, c("apple", stopwords("english"))))
+Error: unexpected ')' in "corpus = tm_map(corpus, removeWords, c("apple", stopwords("english"))))"
+> corpus = tm_map(corpus, removeWords, c("apple", stopwords("english")))
+Warning message:
+In tm_map.SimpleCorpus(corpus, removeWords, c("apple", stopwords("english"))) :
+  transformation drops documents
+> corpus[[1]]
+<<PlainTextDocument>>
+Metadata:  7
+Content:  chars: 67
+> corpus = tm_map(corpus, stemDocument)
+Warning message:
+In tm_map.SimpleCorpus(corpus, stemDocument) :
+  transformation drops documents
+> corpus[[1]]
+<<PlainTextDocument>>
+Metadata:  7
+Content:  chars: 51
+> frequencies = DocumentTermMatrix(corpus)
+> frequencies 
+<<DocumentTermMatrix (documents: 1181, terms: 3289)>>
+Non-/sparse entries: 8980/3875329
+Sparsity           : 100%
+Maximal term length: 115
+Weighting          : term frequency (tf)
+> inspect(frequencies)
+<<DocumentTermMatrix (documents: 1181, terms: 3289)>>
+Non-/sparse entries: 8980/3875329
+Sparsity           : 100%
+Maximal term length: 115
+Weighting          : term frequency (tf)
+Sample             :
+      Terms
+Docs   get ipad iphon ipod ipodplayerpromo itun just make new phone
+  103    0    0     0    0               0    0    0    0   0     0
+  1066   0    1     0    0               0    1    1    0   0     0
+  335    0    0     0    0               0    0    0    0   0     0
+  428    0    0     0    0               0    0    0    0   0     0
+  506    0    0     0    0               0    0    0    0   0     0
+  592    0    0     0    0               0    0    0    0   0     1
+  740    1    0     0    0               0    0    0    0   1     0
+  756    0    0     0    0               0    0    0    0   0     0
+  86     0    0     2    0               0    0    0    0   1     0
+  900    0    0     0    0               0    0    1    0   0     0
+> inspect(frequencies[100:1005, 505:515])
+<<DocumentTermMatrix (documents: 906, terms: 11)>>
+Non-/sparse entries: 28/9938
+Sparsity           : 100%
+Maximal term length: 23
+Weighting          : term frequency (tf)
+Sample             :
+     Terms
+Docs  asap courtsideassistappforio current follow idea kickbutt preinstal save
+  111    0                       0       0      0    1        0         0    0
+  134    0                       0       0      1    0        0         0    0
+  146    0                       0       0      0    0        0         0    0
+  151    0                       0       0      0    1        0         0    0
+  171    0                       0       0      1    0        0         0    0
+  174    0                       0       0      1    0        0         0    0
+  234    0                       0       0      0    0        0         0    0
+  238    0                       0       0      0    1        0         0    0
+  264    0                       0       0      0    1        0         0    0
+  889    0                       0       0      0    1        0         0    0
+     Terms
+Docs  ssd support
+  111   0       0
+  134   0       0
+  146   0       1
+  151   0       0
+  171   0       0
+  174   0       0
+  234   0       1
+  238   0       0
+  264   0       0
+  889   0       2
+> findFreqTerms(frequencies, lowfreq=20)
+ [1] "say"                  "love"                 "iphon"               
+ [4] "iphone5"              "new"                  "thank"               
+ [7] "phone"                "can"                  "make"                
+[10] "market"               "one"                  "will"                
+[13] "cant"                 "get"                  "just"                
+[16] "updat"                "fingerprint"          "iphone5c"            
+[19] "store"                "time"                 "come"                
+[22] "now"                  "use"                  "back"                
+[25] "anyon"                "work"                 "app"                 
+[28] "android"              "think"                "ipad"                
+[31] "well"                 "freak"                "dont"                
+[34] "via"                  "better"               "like"                
+[37] "pleas"                "samsung"              "want"                
+[40] "batteri"              "ios7"                 "microsoft"           
+[43] "itun"                 "buy"                  "releas"              
+[46] "look"                 "appl"                 "need"                
+[49] "googl"                "twitter"              "ipod"                
+[52] "ipodplayerpromo"      "promoipodplayerpromo" "lol"                 
+[55] "realli"               "promo"               
+> sparse = removeSparseTerms(frequencies, 0.995)
+> sparse
+<<DocumentTermMatrix (documents: 1181, terms: 309)>>
+Non-/sparse entries: 4669/360260
+Sparsity           : 99%
+Maximal term length: 20
+Weighting          : term frequency (tf)
+> tweetsSparse = as.data.frame(as.matrix(sparse))
+> colnames(tweetsSparse) = make.names(colnames(tweetsSparse))
+> tweetsSparse$Negative = tweets$Negative
+> library(caTools)
+> set.seed(123)
+> splt = sample.split(tweetsSparse$Negative, SplitRatio = 0.7)
+> trainSparse = subset(tweetsSparse, split == TRUE)
+Error in split == TRUE : 
+  comparison (1) is possible only for atomic and list types
+> split = sample.split(tweetsSparse$Negative, SplitRatio = 0.7)
+> trainSparse = subset(tweetsSparse, split == TRUE)
+> testSparse = subset(tweetsSparse, split == FALSE)
+> findFreqTerms(frequencies, lowfreq=100)
+[1] "iphon" "new"   "itun" 
+> library(rpart)
+> library(rpart.plot)
+> tweetCART = rpart(Negative ~ ., data=trainSparse, method = "class")
+> prp(tweetCART)
+> predictCART = predict(tweetCART, newdata=testSparse, type="class")
+> table(testSparse$Negative, predictCART)
+       predictCART
+        FALSE TRUE
+  FALSE   297    3
+  TRUE     33   22
+> (297+22)/(297+22+3+33)
+[1] 0.8985915
+> table(testSparse$Negative)/nrow(testSparse)
+
+    FALSE      TRUE 
+0.8450704 0.1549296 
+> library(randomForest)
+randomForest 4.6-14
+Type rfNews() to see new features/changes/bug fixes.
+> set.seed(123)
+> tweetRF = randomForest(Negative ~ ., data=trainSparse)
+> predictRF = predict(tweetRF, newdata=testSparse)
+> table(testSparse$Negative, predictRF)
+       predictRF
+        FALSE TRUE
+  FALSE   293    7
+  TRUE     32   23
+> (293+23)/(293+23+7+32)
+[1] 0.8901408
+> tweetLog = glm(Negative ~ ., data=trainSparse, family="binomial")
+Warning message:
+glm.fit: fitted probabilities numerically 0 or 1 occurred 
+> predictions = predict(tweetLog, newdata=testSparse, type="response")
+Warning message:
+In predict.lm(object, newdata, se.fit, scale = 1, type = if (type ==  :
+  prediction from a rank-deficient fit may be misleading
+> table(testSparse$Negative, predictions>0.5)
+       
+        FALSE TRUE
+  FALSE   218   82
+  TRUE     21   34
+> (218+34)/(218+34+82+21)
+[1] 0.7098592
+> table(testSparse$Negative, predictions>=0.5)
+       
+        FALSE TRUE
+  FALSE   218   82
+  TRUE     21   34
+> table(testSparse$Negative, predictions>0.5)
+       
+        FALSE TRUE
+  FALSE   218   82
+  TRUE     21   34
+> 
